@@ -13,6 +13,8 @@ void cacheJClasses(JavaVM *vm) {
 
 void log(JNIEnv *env, char const *tag, char const *log)
 {
+    if (cls_MainActivity == NULL) return;
+
     jmethodID mid = env->GetStaticMethodID(cls_MainActivity, "nativeLog",
                                            "(Ljava/lang/String;Ljava/lang/String;)V");
     if (mid == NULL) return;
@@ -44,6 +46,19 @@ Java_com_czf_nativeapp_MainActivity_startNativeMQ(JNIEnv *env, jobject jobj)
     pthread_create(&pthread, NULL, nativeMQRoutine, NULL);
 }
 
+extern "C" JNIEXPORT void JNICALL
+Java_com_czf_nativeapp_MainActivity_sendMsg2Native(JNIEnv *env, jobject jobj, jobject handler, jstring msg)
+{
+    jclass clsHandler = env->GetObjectClass(handler);
+    if (clsHandler == NULL) return;
+
+    jmethodID mid = env->GetMethodID(clsHandler, "sendEmptyMessage", "(I)Z");
+    env->DeleteLocalRef(clsHandler);
+    if (mid == NULL) return;
+
+    env->CallBooleanMethod(handler, mid, 7);
+}
+
 /**
  * When System.loadLibrary loads a native library, the virtual machine
  * searches for the method.
@@ -56,7 +71,8 @@ JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM* vm, void* reserved)
     cacheJClasses(vm);
     JNIEnv *env;
     vm->GetEnv((void**)&env, JNI_VERSION_1_6);
-    log(env, "-=-=-=-=-", "lib is attached from jvm.");
+    log(env, "-=-=-=-=-", "lib is attached to jvm.");
+
     return JNI_VERSION_1_6;
 }
 

@@ -2,12 +2,11 @@ package com.czf.nativeapp;
 
 import android.os.Handler;
 import android.os.Looper;
+import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -56,15 +55,36 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+        findViewById(R.id.send_msg_2_native).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (nativeHandler == null) return;
+                sendMsg2Native(nativeHandler, null);
+            }
+        });
     }
 
     /**
-     * native will call.
+     * will be called in a native thread.
      */
     public static void startNewMessageQueue() {
         Looper.prepare();
-        nativeHandler = new Handler();
+        nativeHandler = new Handler(new Handler.Callback() {
+            @Override
+            public boolean handleMessage(Message msg) {
+                Log.d("handle message", msg.toString());
+                return true;
+            }
+        });
         Looper.loop();
+    }
+
+    /**
+     * will be called from native side
+     */
+    public static void showJavaThreadInfo(int flag) {
+        Thread t = Thread.currentThread();
+        Log.d("----java---- " + flag, "name: " + t.getName() + ", tid: " + t.getId());
     }
 
     /**
@@ -72,6 +92,8 @@ public class MainActivity extends AppCompatActivity {
      * which is packaged with this application.
      */
     public native void startNativeMQ();
+
+    public native void sendMsg2Native(Handler nativeHandler, String msg);
 
     /**
      * native will call.

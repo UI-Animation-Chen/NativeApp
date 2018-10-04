@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="com.czf.nativeapp.MainActivity">
 
     <Button
@@ -23,5 +24,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="quit mq" />
+
+    <Button
+        android:id="@+id/send_msg_2_native"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="send msg 2 native" />
 
 </LinearLayout>
