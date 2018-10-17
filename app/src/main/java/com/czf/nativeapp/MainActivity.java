@@ -3,6 +3,7 @@ package com.czf.nativeapp;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -60,6 +61,12 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (nativeHandler == null) return;
                 sendMsg2Native(nativeHandler, null);
+            }
+        });
+        findViewById(R.id.sleep_1_s).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SystemClock.sleep(1000);
             }
         });
     }
