@@ -24,6 +24,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         initView();
+
+        // build.gradle中的applicationId不会改变源文件的包名。
+        Log.d("------- pacakge: ", getPackageName());
+        Log.d("------- class name: ", getClass().getName());
     }
 
     private void initView() {
