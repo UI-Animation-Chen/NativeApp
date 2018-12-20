@@ -1,5 +1,6 @@
 package com.czf.nativeapp;
 
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
@@ -26,8 +27,12 @@ public class MainActivity extends AppCompatActivity {
         initView();
 
         // build.gradle中的applicationId不会改变源文件的包名。
-        Log.d("------- pacakge: ", getPackageName());
-        Log.d("------- class name: ", getClass().getName());
+        Log.d("------- pacakge", getPackageName());
+        Log.d("---- class name", getClass().getName());
+        Log.d("--- external file dir", getExternalFilesDir(null).getAbsolutePath());
+        Log.d("-- external cache dir", getExternalCacheDir().getAbsolutePath());
+        Log.d("-- external directory", Environment.getExternalStorageDirectory().getAbsolutePath());
+        Log.d("- external public dir", Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).getAbsolutePath());
     }
 
     private void initView() {
