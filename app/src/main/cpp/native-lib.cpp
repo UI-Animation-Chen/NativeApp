@@ -46,9 +46,26 @@ Java_com_czf_nativeapp_MainActivity_startNativeMQ(JNIEnv *env, jobject jobj)
     pthread_create(&pthread, NULL, nativeMQRoutine, NULL);
 }
 
+void nativeRun(void)
+{
+    JNIEnv *env = NULL;
+    mJvm->GetEnv((void **)&env, JNI_VERSION_1_6);
+    log(env, "---------", "hehehe");
+}
+
+int setNativePtr2Java(JNIEnv *env) {
+    jmethodID mid = env->GetStaticMethodID(cls_MainActivity, "setNativePtr", "(J)V");
+    if (mid == NULL) return 1;
+
+    env->CallStaticVoidMethod(cls_MainActivity, mid, (long)nativeRun);
+    return 0;
+}
+
 extern "C" JNIEXPORT void JNICALL
 Java_com_czf_nativeapp_MainActivity_sendMsg2Native(JNIEnv *env, jobject jobj, jobject handler, jstring msg)
 {
+    if (setNativePtr2Java(env) != 0) return;
+
     jclass clsHandler = env->GetObjectClass(handler);
     if (clsHandler == NULL) return;
 
@@ -57,6 +74,14 @@ Java_com_czf_nativeapp_MainActivity_sendMsg2Native(JNIEnv *env, jobject jobj, jo
     if (mid == NULL) return;
 
     env->CallBooleanMethod(handler, mid, 7);
+}
+
+typedef void (*RUN_FN)(void);
+
+extern "C" JNIEXPORT void JNICALL
+Java_com_czf_nativeapp_MainActivity_nativeRun(JNIEnv *env, jclass jclz, jlong nativeFnPtr)
+{
+    ((RUN_FN)nativeFnPtr)();
 }
 
 /**

@@ -18,6 +18,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private static Handler nativeHandler;
+    private static long nativePtr;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,6 +81,10 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    public static void setNativePtr(long ptr) {
+        nativePtr = ptr;
+    }
+
     /**
      * will be called in a native thread.
      */
@@ -89,6 +94,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean handleMessage(Message msg) {
                 Log.d("handle message", msg.toString());
+                nativeRun(nativePtr);
                 return true;
             }
         });
@@ -117,5 +123,7 @@ public class MainActivity extends AppCompatActivity {
     public static void nativeLog(String tag, String log) {
         Log.d(tag, log);
     }
+
+    public native static void nativeRun(long nativeFnPtr);
 
 }
