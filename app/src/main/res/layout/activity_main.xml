@@ -8,12 +8,6 @@
     tools:context="com.czf.nativeapp.MainActivity">
 
     <Button
-        android:id="@+id/send_msg"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="send msg" />
-
-    <Button
         android:id="@+id/start_new_mq"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -30,6 +24,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="send msg 2 native" />
+
+    <Button
+        android:id="@+id/show_native_thread_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="show native thread info" />
 
     <Button
         android:id="@+id/sleep_1_s"

@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initView() {
-        findViewById(R.id.send_msg).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.show_native_thread_info).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (nativeHandler != null) {
