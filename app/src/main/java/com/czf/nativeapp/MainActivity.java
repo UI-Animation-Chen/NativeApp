@@ -1,10 +1,8 @@
 package com.czf.nativeapp;
 
-import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
-import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -26,14 +24,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         initView();
-
-        // build.gradle中的applicationId不会改变源文件的包名。
-        Log.d("------- pacakge", getPackageName());
-        Log.d("---- class name", getClass().getName());
-        Log.d("--- external file dir", getExternalFilesDir(null).getAbsolutePath());
-        Log.d("-- external cache dir", getExternalCacheDir().getAbsolutePath());
-        Log.d("-- external directory", Environment.getExternalStorageDirectory().getAbsolutePath());
-        Log.d("- external public dir", Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).getAbsolutePath());
     }
 
     private void initView() {
@@ -76,7 +66,12 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.sleep_1_s).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SystemClock.sleep(1000);
+                //SystemClock.sleep(1000);
+                Log.d("--==---", "start");
+                for (int i = 0; i < 100; i++) {
+                    Object o = MainActivity.this.getJavaObjFromNative();
+                }
+                Log.d("--==---", "end");
             }
         });
     }
@@ -86,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * will be called in a native thread.
+     * will be called from native side
      */
     public static void startNewMessageQueue() {
         Looper.prepare();
@@ -118,12 +113,14 @@ public class MainActivity extends AppCompatActivity {
     public native void sendMsg2Native(Handler nativeHandler, String msg);
 
     /**
-     * native will call.
+     * will be called from native side
      */
     public static void nativeLog(String tag, String log) {
         Log.d(tag, log);
     }
 
     public native static void nativeRun(long nativeFnPtr);
+
+    public native Object getJavaObjFromNative();
 
 }

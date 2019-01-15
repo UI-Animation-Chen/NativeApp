@@ -84,6 +84,21 @@ Java_com_czf_nativeapp_MainActivity_nativeRun(JNIEnv *env, jclass jclz, jlong na
     ((RUN_FN)nativeFnPtr)();
 }
 
+extern "C" JNIEXPORT jobject JNICALL
+Java_com_czf_nativeapp_MainActivity_getJavaObjFromNative(JNIEnv *env, jobject thiz)
+{
+    jclass cls = env->GetObjectClass(thiz);
+    if (cls == NULL) return NULL;
+
+    jmethodID mid = env->GetMethodID(cls, "<init>", "()V");
+    if (mid == NULL) return NULL;
+
+    jobject obj = env->NewObject(cls, mid);
+
+    //return env->NewGlobalRef(obj); // memory leaks
+    return obj;
+}
+
 /**
  * When System.loadLibrary loads a native library, the virtual machine
  * searches for the method.
