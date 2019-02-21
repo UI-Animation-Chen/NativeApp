@@ -99,6 +99,17 @@ Java_com_czf_nativeapp_MainActivity_getJavaObjFromNative(JNIEnv *env, jobject th
     return obj;
 }
 
+extern "C" JNIEXPORT jboolean JNICALL
+Java_com_czf_nativeapp_MainActivity_handleDataFromNative(JNIEnv *env, jobject thiz, jintArray iArr)
+{
+    jint *jintArr;
+    jboolean isCopy = JNI_FALSE;
+    jintArr = env->GetIntArrayElements(iArr, &isCopy);
+    jintArr[0] = 7;
+    env->ReleaseIntArrayElements(iArr, jintArr, 0);
+    return isCopy;
+}
+
 /**
  * When System.loadLibrary loads a native library, the virtual machine
  * searches for the method.

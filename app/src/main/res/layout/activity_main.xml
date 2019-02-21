@@ -32,6 +32,12 @@
         android:text="show native thread info" />
 
     <Button
+        android:id="@+id/handle_data_from_native"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="handle data from native" />
+
+    <Button
         android:id="@+id/sleep_1_s"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

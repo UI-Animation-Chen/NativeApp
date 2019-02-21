@@ -74,6 +74,15 @@ public class MainActivity extends AppCompatActivity {
                 Log.d("--==---", "end");
             }
         });
+        findViewById(R.id.handle_data_from_native).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int[] iArr = {1, 2, 3};
+                boolean isCopy = handleDataFromNative(iArr);
+                Log.d("---------", iArr[0] + "-" + iArr[1] + "-" + iArr[2]);
+                Log.d("---------", "isCopy: " + isCopy);
+            }
+        });
     }
 
     public static void setNativePtr(long ptr) {
@@ -122,5 +131,7 @@ public class MainActivity extends AppCompatActivity {
     public native static void nativeRun(long nativeFnPtr);
 
     public native Object getJavaObjFromNative();
+
+    public native boolean handleDataFromNative(int[] intArr);
 
 }
