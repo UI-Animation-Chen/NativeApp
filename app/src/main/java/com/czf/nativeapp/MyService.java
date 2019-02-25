@@ -45,9 +45,12 @@ public class MyService extends Service {
         }
 
         @Override
-        protected boolean onTransact(int code, @NonNull Parcel data, @Nullable Parcel reply, int flags) throws RemoteException {
-            Log.d("-----------", "onTransact:" + code);
-            return super.onTransact(code, data, reply, flags);
+        protected boolean onTransact(int code, @NonNull Parcel data, @Nullable Parcel reply, int flags)
+                throws RemoteException {
+            Log.d("-----------", "onTransact:" + data.readString());
+            if (null != reply)
+                reply.writeString("-----from service lalalalala");
+            return true; // 决定了reply会不会传给client端。
         }
     }
 

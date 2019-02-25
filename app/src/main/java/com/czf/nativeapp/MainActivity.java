@@ -28,7 +28,12 @@ public class MainActivity extends AppCompatActivity {
         public void onServiceConnected(ComponentName name, IBinder service) {
             Log.d("---------", "onServiceConnected" + service);
             try {
-                service.transact(7, Parcel.obtain(), Parcel.obtain(), 0);
+                Parcel toData = Parcel.obtain();
+                toData.writeString("-----from main activity");
+                Parcel replyData = Parcel.obtain();
+                boolean result = service.transact(7, toData, replyData, 0);
+                Log.d("----", "result:" + result + ", replayData:" + replyData.readString());
+                //replyData.recycle();
             } catch (RemoteException e) {
 
             }
