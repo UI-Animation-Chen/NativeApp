@@ -1,8 +1,14 @@
 package com.czf.nativeapp;
 
+import android.content.ComponentName;
+import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Handler;
+import android.os.IBinder;
 import android.os.Looper;
 import android.os.Message;
+import android.os.Parcel;
+import android.os.RemoteException;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,6 +23,22 @@ public class MainActivity extends AppCompatActivity {
 
     private static Handler nativeHandler;
     private static long nativePtr;
+    private ServiceConnection myServiceConn = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            Log.d("---------", "onServiceConnected" + service);
+            try {
+                service.transact(7, Parcel.obtain(), Parcel.obtain(), 0);
+            } catch (RemoteException e) {
+
+            }
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            Log.d("---------", "onServiceDisconnected");
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,8 +105,29 @@ public class MainActivity extends AppCompatActivity {
                 Log.d("---------", "isCopy: " + isCopy);
             }
         });
+        findViewById(R.id.start_service).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent myService = new Intent();
+                myService.setClassName(MainActivity.this, "com.czf.nativeapp.MyService");
+//                startService(myService);
+                bindService(myService, myServiceConn, BIND_AUTO_CREATE);
+            }
+        });
+        findViewById(R.id.stop_service).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                Intent myService = new Intent();
+//                myService.setClassName(MainActivity.this, "com.czf.nativeapp.MyService");
+//                stopService(myService);
+                unbindService(myServiceConn);
+            }
+        });
     }
 
+    /**
+     * will be called from native side
+     */
     public static void setNativePtr(long ptr) {
         nativePtr = ptr;
     }

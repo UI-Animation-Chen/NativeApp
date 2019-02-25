@@ -43,8 +43,16 @@
         android:layout_height="wrap_content"
         android:text="main thread sleep 1 s" />
 
-    <ProgressBar
-        android:layout_width="100dp"
-        android:layout_height="100dp" />
+    <Button
+        android:id="@+id/start_service"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="start/bind service"/>
+
+    <Button
+        android:id="@+id/stop_service"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="stop/unbind service"/>
 
 </LinearLayout>
