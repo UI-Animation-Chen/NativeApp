@@ -7,8 +7,8 @@ import android.util.Log;
 
 public class MySQLiteDBHelper extends SQLiteOpenHelper {
 
-    public MySQLiteDBHelper(Context context, String dbName, int dbVersion) {
-        super(context, dbName, null, dbVersion);
+    public MySQLiteDBHelper(Context context) {
+        super(context, DBConfig.dbName, null, DBConfig.dbVersion);
     }
 
     @Override
@@ -20,10 +20,25 @@ public class MySQLiteDBHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         Log.d("-----", "sql helper onUpgrade oldV:" + oldVersion + ", newV:" + newVersion);
+        if (oldVersion < 2) { // 需要升级到2
+            db.execSQL("ALTER TABLE " + MyNameTable.name + " ADD COLUMN " + MyNameTable.columnAdrress
+                    + " VARCHAR(100) " + "DEFAULT 'China';");
+        }
+        if (oldVersion < 3) { // 需要升级到3
+
+        }
     }
 
     private void createTableIfNeed(SQLiteDatabase db) {
-        db.execSQL("CREATE TABLE IF NOT EXISTS" + " [mytable] " + "([_id] INTEGER PRIMARY KEY AUTOINCREMENT, [name] VARCHAR(20), [age] INTEGER);");
+        db.execSQL("CREATE TABLE IF NOT EXISTS [" + MyNameTable.name +
+                "] ([_id] INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                MyNameTable.columnName + " VARCHAR(20), " +
+                MyNameTable.columnAge + " INTEGER);");
+    }
+
+    static class DBConfig {
+        static String dbName = "myDbName";
+        static int dbVersion = 2;
     }
 
 }

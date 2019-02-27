@@ -17,6 +17,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
+import com.czf.nativeapp.db.MyNameTable;
 import com.czf.nativeapp.db.MySQLiteDBHelper;
 
 public class MainActivity extends AppCompatActivity {
@@ -119,7 +120,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent myService = new Intent();
-                myService.setClassName(MainActivity.this, "com.czf.nativeapp.MyService");
+                myService.setClassName(MainActivity.this,
+                        "com.czf.nativeapp.MyService");
 //                startService(myService);
                 bindService(myService, myServiceConn, BIND_AUTO_CREATE);
             }
@@ -136,36 +138,58 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.open_sqlite).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MySQLiteDBHelper h = new MySQLiteDBHelper(getApplicationContext(), "myDbName", 1);
+                MySQLiteDBHelper h = new MySQLiteDBHelper(getApplicationContext());
                 SQLiteDatabase db = h.getWritableDatabase();
-                Log.d("-------", db.toString());
+                Log.d("-------", "db open: " + db.toString());
                 //db.execSQL("CREATE ");
             }
         });
         findViewById(R.id.insert_one_row).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MySQLiteDBHelper h = new MySQLiteDBHelper(getApplicationContext(), "myDbName", 1);
+                MySQLiteDBHelper h = new MySQLiteDBHelper(getApplicationContext());
                 SQLiteDatabase db = h.getWritableDatabase();
                 ContentValues cv = new ContentValues();
-                cv.put("name", "chenzhifei");
-                cv.put("age", 29);
-                db.insert("mytable", null, cv);
+                cv.put(MyNameTable.columnName, "chenzhifei");
+                cv.put(MyNameTable.columnAge, 29);
+                cv.put(MyNameTable.columnAdrress, "America");
+                db.insert(MyNameTable.name, null, cv);
             }
         });
         findViewById(R.id.query_one_row).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MySQLiteDBHelper h = new MySQLiteDBHelper(getApplicationContext(), "myDbName", 1);
+                MySQLiteDBHelper h = new MySQLiteDBHelper(getApplicationContext());
                 SQLiteDatabase db = h.getWritableDatabase();
-                Cursor c = db.query("mytable", null, "name=?",
+                Cursor c = db.query(MyNameTable.name, null, MyNameTable.columnName +"=?",
                         new String[]{"chenzhifei"}, null, null, null);
                 Log.d("-----------", "num: " + c.getCount());
                 while (c.moveToNext()) {
-                    Log.d("-----------", "name: " + c.getString(c.getColumnIndex("name")));
-                    Log.d("--------", "age: " + c.getInt(c.getColumnIndex("age")));
+                    Log.d("----", c.getString(c.getColumnIndex(MyNameTable.columnName)));
+                    Log.d("----", c.getInt(c.getColumnIndex(MyNameTable.columnAge)) + "");
+                    Log.d("----", c.getString(c.getColumnIndex(MyNameTable.columnAdrress)));
                 }
                 c.close();
+            }
+        });
+        findViewById(R.id.update).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MySQLiteDBHelper h = new MySQLiteDBHelper(getApplicationContext());
+                SQLiteDatabase db = h.getWritableDatabase();
+                ContentValues cv = new ContentValues();
+                cv.put("age", 28);
+                db.update(MyNameTable.name, cv, MyNameTable.columnName + "=?",
+                        new String[]{"chenzhifei"});
+            }
+        });
+        findViewById(R.id.delete).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MySQLiteDBHelper h = new MySQLiteDBHelper(getApplicationContext());
+                SQLiteDatabase db = h.getWritableDatabase();
+                db.delete(MyNameTable.name, MyNameTable.columnName + "=?",
+                        new String[]{"chenzhifei"});
             }
         });
     }
