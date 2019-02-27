@@ -1,8 +1,11 @@
 package com.czf.nativeapp;
 
 import android.content.ComponentName;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
@@ -13,6 +16,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+
+import com.czf.nativeapp.db.MySQLiteDBHelper;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -126,6 +131,41 @@ public class MainActivity extends AppCompatActivity {
 //                myService.setClassName(MainActivity.this, "com.czf.nativeapp.MyService");
 //                stopService(myService);
                 unbindService(myServiceConn);
+            }
+        });
+        findViewById(R.id.open_sqlite).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MySQLiteDBHelper h = new MySQLiteDBHelper(getApplicationContext(), "myDbName", 1);
+                SQLiteDatabase db = h.getWritableDatabase();
+                Log.d("-------", db.toString());
+                //db.execSQL("CREATE ");
+            }
+        });
+        findViewById(R.id.insert_one_row).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MySQLiteDBHelper h = new MySQLiteDBHelper(getApplicationContext(), "myDbName", 1);
+                SQLiteDatabase db = h.getWritableDatabase();
+                ContentValues cv = new ContentValues();
+                cv.put("name", "chenzhifei");
+                cv.put("age", 29);
+                db.insert("mytable", null, cv);
+            }
+        });
+        findViewById(R.id.query_one_row).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MySQLiteDBHelper h = new MySQLiteDBHelper(getApplicationContext(), "myDbName", 1);
+                SQLiteDatabase db = h.getWritableDatabase();
+                Cursor c = db.query("mytable", null, "name=?",
+                        new String[]{"chenzhifei"}, null, null, null);
+                Log.d("-----------", "num: " + c.getCount());
+                while (c.moveToNext()) {
+                    Log.d("-----------", "name: " + c.getString(c.getColumnIndex("name")));
+                    Log.d("--------", "age: " + c.getInt(c.getColumnIndex("age")));
+                }
+                c.close();
             }
         });
     }

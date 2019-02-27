@@ -1,58 +1,81 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+
+
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
+    android:layout_height="wrap_content"
     tools:context="com.czf.nativeapp.MainActivity">
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+        <Button
+            android:id="@+id/start_new_mq"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="start new mq" />
 
-    <Button
-        android:id="@+id/start_new_mq"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="start new mq" />
+        <Button
+            android:id="@+id/quit_mq"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="quit mq" />
 
-    <Button
-        android:id="@+id/quit_mq"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="quit mq" />
+        <Button
+            android:id="@+id/send_msg_2_native"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="send msg 2 native" />
 
-    <Button
-        android:id="@+id/send_msg_2_native"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="send msg 2 native" />
+        <Button
+            android:id="@+id/show_native_thread_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="show native thread info" />
 
-    <Button
-        android:id="@+id/show_native_thread_info"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="show native thread info" />
+        <Button
+            android:id="@+id/handle_data_from_native"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="handle data from native" />
 
-    <Button
-        android:id="@+id/handle_data_from_native"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="handle data from native" />
+        <Button
+            android:id="@+id/sleep_1_s"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="main thread sleep 1 s" />
 
-    <Button
-        android:id="@+id/sleep_1_s"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="main thread sleep 1 s" />
+        <Button
+            android:id="@+id/start_service"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="start/bind service"/>
 
-    <Button
-        android:id="@+id/start_service"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="start/bind service"/>
+        <Button
+            android:id="@+id/stop_service"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="stop/unbind service"/>
 
-    <Button
-        android:id="@+id/stop_service"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="stop/unbind service"/>
+        <Button
+            android:id="@+id/open_sqlite"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="open sqlite"/>
+
+        <Button
+            android:id="@+id/insert_one_row"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="insert one row"/>
+
+        <Button
+            android:id="@+id/query_one_row"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="query one row"/>
 
 </LinearLayout>
+</ScrollView>

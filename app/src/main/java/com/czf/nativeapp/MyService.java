@@ -45,8 +45,7 @@ public class MyService extends Service {
         }
 
         @Override
-        protected boolean onTransact(int code, @NonNull Parcel data, @Nullable Parcel reply, int flags)
-                throws RemoteException {
+        protected boolean onTransact(int code, @NonNull Parcel data, @Nullable Parcel reply, int flags) {
             Log.d("-----------", "onTransact:" + data.readString());
             if (null != reply)
                 reply.writeString("-----from service lalalalala");
