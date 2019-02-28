@@ -33,7 +33,9 @@ public class MySQLiteDBHelper extends SQLiteOpenHelper {
         db.execSQL("CREATE TABLE IF NOT EXISTS [" + MyNameTable.name +
                 "] ([_id] INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 MyNameTable.columnName + " VARCHAR(20), " +
-                MyNameTable.columnAge + " INTEGER);");
+                MyNameTable.columnAge + " INTEGER, " +
+                MyNameTable.columnAdrress + " VARCHAR(50));"
+        );
     }
 
     static class DBConfig {
