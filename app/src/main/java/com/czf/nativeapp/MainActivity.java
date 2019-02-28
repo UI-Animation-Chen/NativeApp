@@ -33,15 +33,17 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
             Log.d("---------", "onServiceConnected" + service);
+            Parcel toData = Parcel.obtain();
+            toData.writeString("-----from main activity");
+            Parcel replyData = Parcel.obtain(); // c style
             try {
-                Parcel toData = Parcel.obtain();
-                toData.writeString("-----from main activity");
-                Parcel replyData = Parcel.obtain();
                 boolean result = service.transact(7, toData, replyData, 0);
                 Log.d("----", "result:" + result + ", replayData:" + replyData.readString());
-                //replyData.recycle();
             } catch (RemoteException e) {
-
+                e.printStackTrace();
+            } finally {
+                toData.recycle();
+                replyData.recycle();
             }
         }
 
@@ -178,7 +180,7 @@ public class MainActivity extends AppCompatActivity {
                 MySQLiteDBHelper h = new MySQLiteDBHelper(getApplicationContext());
                 SQLiteDatabase db = h.getWritableDatabase();
                 ContentValues cv = new ContentValues();
-                cv.put("age", 28);
+                cv.put(MyNameTable.columnAge, 28);
                 db.update(MyNameTable.name, cv, MyNameTable.columnName + "=?",
                         new String[]{"chenzhifei"});
             }
