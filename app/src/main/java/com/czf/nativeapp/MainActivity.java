@@ -20,6 +20,11 @@ import android.view.View;
 import com.czf.nativeapp.db.MyNameTable;
 import com.czf.nativeapp.db.MySQLiteDBHelper;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+
 public class MainActivity extends AppCompatActivity {
 
     // Used to load the 'native-lib' library on application startup.
@@ -194,6 +199,21 @@ public class MainActivity extends AppCompatActivity {
                         new String[]{"chenzhifei"});
             }
         });
+        findViewById(R.id.fork_linux_proc).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                File a = new File("/sdcard/a.log");
+                try {
+                    FileOutputStream fos = new FileOutputStream(a);
+                    OutputStreamWriter opsw = new OutputStreamWriter(fos);
+                    opsw.write("hello", 0, 5);
+                    opsw.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                startNewLinuxProc();
+            }
+        });
     }
 
     /**
@@ -247,5 +267,7 @@ public class MainActivity extends AppCompatActivity {
     public native Object getJavaObjFromNative();
 
     public native boolean handleDataFromNative(int[] intArr);
+
+    public native void startNewLinuxProc();
 
 }

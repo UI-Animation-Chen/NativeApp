@@ -89,5 +89,11 @@
             android:layout_height="wrap_content"
             android:text="delete"/>
 
+        <Button
+            android:id="@+id/fork_linux_proc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="fork linux proc"/>
+
 </LinearLayout>
 </ScrollView>

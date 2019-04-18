@@ -1,5 +1,9 @@
 #include <jni.h>
 #include <pthread.h>
+#include <unistd.h>
+#include <fcntl.h>
+#include <android/log.h>
+#include <errno.h>
 
 JavaVM* mJvm = NULL;
 jclass cls_MainActivity = NULL;
@@ -108,6 +112,31 @@ Java_com_czf_nativeapp_MainActivity_handleDataFromNative(JNIEnv *env, jobject th
     jintArr[0] = 7;
     env->ReleaseIntArrayElements(iArr, jintArr, 0);
     return isCopy;
+}
+
+extern "C" JNIEXPORT void JNICALL
+Java_com_czf_nativeapp_MainActivity_startNewLinuxProc(JNIEnv *env, jobject thiz)
+{
+    int fd = open("/sdcard/a.log", O_CREAT | O_RDWR);
+    if (fd != -1) {
+        write(fd, "hello world", 11);
+        close(fd);
+    } else {
+        char err = errno + 48;
+        char buf[2];
+        buf[0] = err,
+        buf[1] = 0;
+        log(env, "-----jni------", buf);
+    }
+    int pid = -1;
+    if ((pid = fork()) == 0) {
+
+        //execv("/sdcard/linux_proc", NULL);
+    } else if (pid > 0) {
+        log(env, "--------jni---", "parent proc");
+    } else {
+        log(env, "---jni----", "fork error");
+    }
 }
 
 /**
