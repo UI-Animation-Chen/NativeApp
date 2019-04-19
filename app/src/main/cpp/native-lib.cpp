@@ -4,6 +4,8 @@
 #include <fcntl.h>
 #include <android/log.h>
 #include <errno.h>
+#include <stdio.h>
+#include <string.h>
 
 JavaVM* mJvm = NULL;
 jclass cls_MainActivity = NULL;
@@ -119,10 +121,20 @@ Java_com_czf_nativeapp_MainActivity_startNewLinuxProc(JNIEnv *env, jobject thiz)
 {
     int pid = -1;
     if ((pid = fork()) == 0) {  // child proc
-        //execv("/sdcard/linux_proc", NULL);
-        while (true) {
-            sleep(1);
-        }
+//        int result = execv("/data/local/tmp/linux_proc", NULL);
+        int result = open("/data/local/tmp/linux_proc.txt", O_CREAT | O_RDWR);
+        int fd = open("/sdcard/linux_result.txt", O_CREAT | O_RDWR);
+        char resultStr[100];
+        resultStr[98] = '\0';
+        resultStr[99] = '\n';
+        sprintf(resultStr, "execv res: %d, errno: %d, errstr: %s--", result, errno, strerror(errno));
+        write(fd, resultStr, 100);
+//        while (true) {
+//            log(env, "--------jni---", "child proc");
+//            sleep(2);
+//            jmethodID finishMID = env->GetMethodID(cls_MainActivity, "finish", "()V");
+//            env->CallVoidMethod(thiz, finishMID);
+//        }
     } else if (pid > 0) {       // parent proc, pid is the child pid
         log(env, "--------jni---", "parent proc");
     } else {

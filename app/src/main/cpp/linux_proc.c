@@ -12,7 +12,7 @@ int main(int argc, char *argv[], char *env[]) {
     if (fd == 0) {
         return -1;
     }
-    for (;;) {
+    while (1) {
         write(fd, "hello world\n", 12);
         sleep(1);
     }
