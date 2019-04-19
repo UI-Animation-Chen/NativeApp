@@ -117,22 +117,13 @@ Java_com_czf_nativeapp_MainActivity_handleDataFromNative(JNIEnv *env, jobject th
 extern "C" JNIEXPORT void JNICALL
 Java_com_czf_nativeapp_MainActivity_startNewLinuxProc(JNIEnv *env, jobject thiz)
 {
-    int fd = open("/sdcard/a.log", O_CREAT | O_RDWR);
-    if (fd != -1) {
-        write(fd, "hello world", 11);
-        close(fd);
-    } else {
-        char err = errno + 48;
-        char buf[2];
-        buf[0] = err,
-        buf[1] = 0;
-        log(env, "-----jni------", buf);
-    }
     int pid = -1;
-    if ((pid = fork()) == 0) {
-
+    if ((pid = fork()) == 0) {  // child proc
         //execv("/sdcard/linux_proc", NULL);
-    } else if (pid > 0) {
+        while (true) {
+            sleep(1);
+        }
+    } else if (pid > 0) {       // parent proc, pid is the child pid
         log(env, "--------jni---", "parent proc");
     } else {
         log(env, "---jni----", "fork error");

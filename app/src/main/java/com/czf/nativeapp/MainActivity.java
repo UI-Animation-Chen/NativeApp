@@ -202,15 +202,6 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.fork_linux_proc).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                File a = new File("/sdcard/a.log");
-                try {
-                    FileOutputStream fos = new FileOutputStream(a);
-                    OutputStreamWriter opsw = new OutputStreamWriter(fos);
-                    opsw.write("hello", 0, 5);
-                    opsw.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
                 startNewLinuxProc();
             }
         });
